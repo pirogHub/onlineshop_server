@@ -5,6 +5,8 @@ import { ConfigModule } from '@nestjs/config';
 import { SequelizeConfigService } from './users/config/sequelizeConfig.service';
 import { databaseConfig } from './users/config/configuration';
 import { AuthModule } from './auth/auth.module';
+import { BoilerPartsModule } from './boiler-parts/boiler-parts.module';
+import { BoilerPartsController } from './boiler-parts/boiler-parts.controller';
 
 @Module({
   imports: [
@@ -16,8 +18,9 @@ import { AuthModule } from './auth/auth.module';
       load: [databaseConfig]
     }),
     UsersModule,
-    AuthModule],
-  controllers: [],
+    AuthModule,
+    BoilerPartsModule],
+  controllers: [BoilerPartsController],
   providers: [],
 })
 export class AppModule { }
