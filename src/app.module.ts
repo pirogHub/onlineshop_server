@@ -7,6 +7,8 @@ import { databaseConfig } from './users/config/configuration';
 import { AuthModule } from './auth/auth.module';
 import { BoilerPartsModule } from './boiler-parts/boiler-parts.module';
 import { BoilerPartsController } from './boiler-parts/boiler-parts.controller';
+import { ShoppingCartModule } from './shopping-cart/shopping-cart.module';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [
@@ -19,7 +21,9 @@ import { BoilerPartsController } from './boiler-parts/boiler-parts.controller';
     }),
     UsersModule,
     AuthModule,
-    BoilerPartsModule],
+    BoilerPartsModule,
+    ShoppingCartModule,
+    PaymentModule],
   controllers: [BoilerPartsController],
   providers: [],
 })

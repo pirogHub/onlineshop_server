@@ -1,7 +1,13 @@
 import { Column, Model, Table } from "sequelize-typescript";
 
 @Table
-export class BoilerParts extends Model {
+export class ShoppingCart extends Model {
+    @Column
+    userId: number
+
+    @Column({ defaultValue: 0 })
+    partId: number
+
     @Column
     boiler_manufacturer: string
 
@@ -13,31 +19,20 @@ export class BoilerParts extends Model {
 
 
     @Column
-    vendor_code: string
-
-    @Column
     name: string
 
     @Column
-    description: string
-
-    @Column
-    images: string
+    image: string
 
     @Column({ defaultValue: 0 })
     in_stock: number
 
-    @Column({ defaultValue: false })
-    bestseller: boolean
+    @Column({ defaultValue: 0 })
+    count: number
 
-    @Column({ defaultValue: false })
-    new: boolean
+    @Column({ defaultValue: 0 })
+    total_price: number
 
-    @Column
-    popularity: number
-
-    @Column
-    compatibility: string
 
 
 }

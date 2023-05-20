@@ -5,8 +5,9 @@ import { LocalAuthGuard } from 'src/auth/local.auth.guard';
 import { AuthenticatedGuard } from 'src/auth/authenticated.guard';
 import { LoginCheckResponse, LoginUserRequest, LoginUserResponse, LogoutUserResponse, SignupResponse } from './types';
 
-import { ApiBody, ApiOkResponse } from "@nestjs/swagger"
+import { ApiBody, ApiTags, ApiOkResponse } from "@nestjs/swagger"
 
+@ApiTags("users")
 @Controller('users')
 export class UsersController {
 
@@ -41,7 +42,7 @@ export class UsersController {
     @Get('/logout')
     loginOut(@Request() req) {
         req.session.destroy()
-        return { msg: "session gas ended" }
+        return { msg: "session has ended" }
     }
 
 }
