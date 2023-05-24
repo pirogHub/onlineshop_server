@@ -1,4 +1,4 @@
-import { IBoilerPartsQuery } from './types/index';
+import { IBoilerPartsFilter, IBoilerPartsQuery } from './types/index';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { BoilerParts } from './boiler-parts.model';
@@ -12,10 +12,38 @@ export class BoilerPartsService {
         private boilerPartsModel: typeof BoilerParts
     ) { }
 
-    async paginateAndFilter(query: IBoilerPartsQuery): Promise<{ count: number, rows: BoilerParts[] }> {
-        const limit = +query.limit
-        const offset = +query.offset * 20
-        return this.boilerPartsModel.findAndCountAll({ limit, offset })
+    async paginateAndFilter(query: IBoilerPartsQuery): Promise<{ count: number, rows: BoilerParts[], offset: number }> {
+        const limit = +query.limit ? +query.limit : 20
+        let offset = +query.offset > 0 ? +query.offset : 0
+
+        const filter = {} as Partial<IBoilerPartsFilter>
+
+        console.log("!!!!!!!!!!!!!!!!!!!!!!query", query);
+
+
+        if (query.priceFrom && query.priceTo) {
+            filter.price = {
+                [Op.between]: [+query.priceFrom, +query.priceTo]
+            }
+        }
+        if (query.boiler) {
+            filter.boiler_manufacturer = JSON.parse(decodeURIComponent(query.boiler))
+        }
+        if (query.parts) {
+            filter.parts_manufacturer = JSON.parse(decodeURIComponent(query.parts))
+        }
+
+        console.log("!!!!!!!!!!!!!!!!!!!!!!filter", filter);
+
+        let data = await this.boilerPartsModel.findAndCountAll({ limit, offset: offset * 20, where: filter })
+
+        if (offset * 20 > data.count) {
+            offset = Math.ceil(data.count / limit)
+            data = await this.boilerPartsModel.findAndCountAll({ limit, offset: offset * 20, where: filter })
+        }
+        const dataWithOffset = { count: data.count, rows: data.rows, offset }
+
+        return dataWithOffset
     }
 
 

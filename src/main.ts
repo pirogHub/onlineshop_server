@@ -16,6 +16,10 @@ async function bootstrap() {
 
   app.use(passport.initialize())
   app.use(passport.session())
+  app.enableCors({
+    credentials: true,
+    origin: [process.env.CLIENT_HOST]
+  })
 
   const config = new DocumentBuilder()
     .setTitle('Online Shop')
@@ -27,6 +31,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config)
   SwaggerModule.setup('swagger', app, document)
 
-  await app.listen(3000);
+  await app.listen(process.env.PORT || 3000);
 }
 bootstrap();

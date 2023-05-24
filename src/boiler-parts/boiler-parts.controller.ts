@@ -11,28 +11,30 @@ export class BoilerPartsController {
     constructor(private readonly boilerPartsService: BoilerPartsService) { }
 
     @ApiOkResponse({ type: PaginateAndFilterResponse })
-    @UseGuards(AuthenticatedGuard)
+    // @UseGuards(AuthenticatedGuard)
     @Get()
     paginateAndFilter(@Query() query) {
+        console.log("!!!!!!!!!!!!!!!!!!!!!paginateAndFilter");
+
         return this.boilerPartsService.paginateAndFilter(query)
     }
 
     @ApiOkResponse({ type: FindOneResponse })
-    @UseGuards(AuthenticatedGuard)
+    // @UseGuards(AuthenticatedGuard)
     @Get("find/:id")
     getOne(@Param("id") id: string) {
         return this.boilerPartsService.findOne(id)
     }
 
     @ApiOkResponse({ type: GetBestsellersResponse })
-    @UseGuards(AuthenticatedGuard)
+    // @UseGuards(AuthenticatedGuard)
     @Get("bestsellers")
     getBestsellers() {
         return this.boilerPartsService.getBestsellers()
     }
 
     @ApiOkResponse({ type: GetNewResponse })
-    @UseGuards(AuthenticatedGuard)
+    // @UseGuards(AuthenticatedGuard)
     @Get("new")
     getNew(@Param("id") id: string) {
         return this.boilerPartsService.getNew()
@@ -40,7 +42,7 @@ export class BoilerPartsController {
 
     @ApiOkResponse({ type: SearchResponse })
     @ApiBody({ type: SearchResponse })
-    @UseGuards(AuthenticatedGuard)
+    // @UseGuards(AuthenticatedGuard)
     @Post("search")
     search(@Body() { search }: { search: string }) {
         return this.boilerPartsService.findByString(search)
@@ -48,7 +50,7 @@ export class BoilerPartsController {
 
     @ApiOkResponse({ type: GetByNameResponse })
     @ApiBody({ type: GetByNameRequest })
-    @UseGuards(AuthenticatedGuard)
+    // @UseGuards(AuthenticatedGuard)
     @Post("name")
     getByName(@Body() { name }: { name: string }) {
         return this.boilerPartsService.findOneByName(name)
