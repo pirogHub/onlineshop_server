@@ -1,3 +1,4 @@
+import { SessionSerializer } from './../auth/session.serializer';
 import { Request, UseGuards, Body, Header, Controller, Post, HttpCode, HttpStatus, Get } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { createUserDto } from './dto/create-user.dto';
@@ -11,14 +12,23 @@ import { ApiBody, ApiTags, ApiOkResponse } from "@nestjs/swagger"
 @Controller('users')
 export class UsersController {
 
-    constructor(private readonly usersService: UsersService) { }
+    constructor(private readonly usersService: UsersService,
+        private readonly sessionSerializer: SessionSerializer) { }
 
     @ApiOkResponse({ type: SignupResponse })
     @Post('/signup')
     @HttpCode(HttpStatus.CREATED)
     @Header('Content-type', 'application/json')
-    createUser(@Body() createUserDto: createUserDto) {
-        return this.usersService.create(createUserDto)
+    async createUser(@Request() req, @Body() createUserDto: createUserDto) {
+        const user = await this.usersService.create(createUserDto)
+        // const tmp = await this.sessionSerializer.serializeUser(user, () => { })
+        // const tmp1 = await this.sessionSerializer.deserializeUser(user, () => { })
+
+        // console.log("tmp", tmp);
+        // console.log("tmp1", tmp1);
+        // console.log("req", req.session);
+
+        return user
     }
 
     @ApiBody({ type: LoginUserRequest })
@@ -27,6 +37,7 @@ export class UsersController {
     @UseGuards(LocalAuthGuard)
     @HttpCode(HttpStatus.OK)
     login(@Request() req) {
+        // console.log("req", req.session);
         return { user: req.user, msg: "Logged in" }
     }
 
@@ -34,7 +45,7 @@ export class UsersController {
     @Get('/login-check')
     @UseGuards(AuthenticatedGuard)
     loginCheck(@Request() req) {
-        return req.user
+        return { data: req.user }
         // return 5
     }
 

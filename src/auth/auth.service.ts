@@ -13,7 +13,7 @@ export class AuthService {
 
     async validateUser(username: string, password: string) {
         const user = await this.usersService.findOne({ where: { username } })
-
+        // console.log("validateUser");
         if (!user) {
             throw new UnauthorizedException("Invadid credentials")
         }

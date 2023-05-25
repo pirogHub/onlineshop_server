@@ -18,7 +18,6 @@ export class BoilerPartsService {
 
         const filter = {} as Partial<IBoilerPartsFilter>
 
-        console.log("!!!!!!!!!!!!!!!!!!!!!!query", query);
 
 
         if (query.priceFrom && query.priceTo) {
@@ -33,7 +32,6 @@ export class BoilerPartsService {
             filter.parts_manufacturer = JSON.parse(decodeURIComponent(query.parts))
         }
 
-        console.log("!!!!!!!!!!!!!!!!!!!!!!filter", filter);
 
         let data = await this.boilerPartsModel.findAndCountAll({ limit, offset: offset * 20, where: filter })
 

@@ -14,7 +14,6 @@ export class BoilerPartsController {
     // @UseGuards(AuthenticatedGuard)
     @Get()
     paginateAndFilter(@Query() query) {
-        console.log("!!!!!!!!!!!!!!!!!!!!!paginateAndFilter");
 
         return this.boilerPartsService.paginateAndFilter(query)
     }

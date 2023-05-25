@@ -16,7 +16,6 @@ export class ShoppingCartService {
 
 
     async findAll(userId: number | string): Promise<ShoppingCart[]> {
-        console.log("userId", userId);
 
         return this.shoppingCartModel.findAll({ where: { userId } })
     }

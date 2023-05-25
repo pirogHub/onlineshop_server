@@ -68,7 +68,6 @@ describe("Auth Controller", () => {
     it('should login user', async () => {
 
         const response = await request(app.getHttpServer()).post('/users/login').send({ ...mockedUser })
-        console.log("response.body", response.body);
 
 
         expect(response.body.user.username).toBe(mockedUser.username)
@@ -82,7 +81,6 @@ describe("Auth Controller", () => {
         const loginCheck = await request(app.getHttpServer()).get('/users/login-check').set("Cookie", login.header["set-cookie"])
 
 
-        console.log("response.body", loginCheck.body);
 
 
         expect(loginCheck.body.username).toBe(mockedUser.username)
@@ -92,7 +90,6 @@ describe("Auth Controller", () => {
     it('should login check', async () => {
 
         const response = await request(app.getHttpServer()).get('/users/logout')
-        console.log("response.body", response.body);
 
         expect(response.body.msg).toBe("session has ended")
     })

@@ -61,7 +61,6 @@ describe("Users Controller", () => {
         }
 
         const response = await request(app.getHttpServer()).post('/users/signup').send(newUser)
-        console.log("response.body", response.body);
 
         const passwordIsValid = await bcrypt.compare(newUser.password, response.body.password)
 

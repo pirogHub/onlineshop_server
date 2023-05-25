@@ -78,7 +78,6 @@ describe('Shopping Cart Controller', () => {
             where: { username: mockedUser.username },
         });
 
-        console.log("user!!!!!!!!!!!!!!!!!!!!!!!", user);
 
         const part = await boilerPartsService.findOne(1);
 
@@ -118,10 +117,6 @@ describe('Shopping Cart Controller', () => {
             .get(`/shopping-cart/${user.id}`)
             .set('Cookie', login.headers['set-cookie']);
 
-        console.group("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        console.log("response.body", response.body);
-
-        console.groupEnd();
 
 
 
