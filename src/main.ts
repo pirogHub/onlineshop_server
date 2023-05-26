@@ -7,7 +7,7 @@ import cors from "cors"
 import { SwaggerModule } from "@nestjs/swagger"
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { cors: true });
+  const app = await NestFactory.create(AppModule);
   app.use(session({
     secret: "sdgfdss",
     resave: false,
@@ -18,9 +18,10 @@ async function bootstrap() {
     credentials: true,
     allowedHeaders: ['Origin', ' X-Requested-With', ' Content-Type', ' Accept', ' Authorization'],
     // origin: [process.env.CLIENT_HOST, "http://localhost:3000", "localhost:3000", "http://localhost:3001"],
-    origin: process.env.CLIENT_HOST,
+    // origin: process.env.CLIENT_HOST,
+    origin: "http://localhost:3000",
     // origin: true,
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
   }
   app.use(passport.initialize())
   app.use(passport.session())
