@@ -16,13 +16,7 @@ async function bootstrap() {
 
   app.use(passport.initialize())
   app.use(passport.session())
-  app.enableCors({
-    credentials: true,
-    allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
-    // origin: [process.env.CLIENT_HOST, "http://localhost:3000/", "http://localhost:3001/"],
-    origin: true,
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE, OPTIONS",
-  })
+  app.enableCors()
   // app.use(
   //   cors({
   //     credentials: true,
