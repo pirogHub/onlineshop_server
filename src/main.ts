@@ -18,7 +18,7 @@ async function bootstrap() {
   app.use(passport.session())
   app.enableCors({
     credentials: true,
-    origin: [process.env.CLIENT_HOST]
+    origin: [process.env.CLIENT_HOST, "http://localhost:3000/", "http://localhost:3001/"]
   })
   app.use(
     cors({
