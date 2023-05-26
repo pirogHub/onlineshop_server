@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import * as session from "express-session"
 import * as passport from "passport"
 import { DocumentBuilder } from '@nestjs/swagger';
-
+import cors from "cors"
 import { SwaggerModule } from "@nestjs/swagger"
 
 async function bootstrap() {
@@ -20,7 +20,14 @@ async function bootstrap() {
     credentials: true,
     origin: [process.env.CLIENT_HOST]
   })
-
+  app.use(
+    cors({
+      credentials: true,
+      origin: [process.env.CLIENT_HOST, "http://localhost:3000/", "http://localhost:3001/"], // contains the frontend url
+      methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"],
+      allowedHeaders: ["Content-Type", "Authorization"],
+    })
+  );
   const config = new DocumentBuilder()
     .setTitle('Online Shop')
     .setDescription('api documentation')
