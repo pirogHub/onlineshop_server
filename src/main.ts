@@ -7,7 +7,7 @@ import cors from "cors"
 import { SwaggerModule } from "@nestjs/swagger"
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
   app.use(session({
     secret: "sdgfdss",
     resave: false,
@@ -18,16 +18,18 @@ async function bootstrap() {
   app.use(passport.session())
   app.enableCors({
     credentials: true,
-    origin: [process.env.CLIENT_HOST, "http://localhost:3000/", "http://localhost:3001/"]
+    allowedHeaders: "*",
+    origin: [process.env.CLIENT_HOST, "http://localhost:3000/", "http://localhost:3001/"],
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   })
-  app.use(
-    cors({
-      credentials: true,
-      origin: [process.env.CLIENT_HOST, "http://localhost:3000/", "http://localhost:3001/"], // contains the frontend url
-      methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"],
-      allowedHeaders: ["Content-Type", "Authorization"],
-    })
-  );
+  // app.use(
+  //   cors({
+  //     credentials: true,
+  //     origin: [process.env.CLIENT_HOST, "http://localhost:3000/", "http://localhost:3001/"], // contains the frontend url
+  //     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"],
+  //     allowedHeaders: ["Content-Type", "Authorization"],
+  //   })
+  // );
   const config = new DocumentBuilder()
     .setTitle('Online Shop')
     .setDescription('api documentation')
