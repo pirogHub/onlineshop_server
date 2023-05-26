@@ -7,7 +7,7 @@ import cors from "cors"
 import { SwaggerModule } from "@nestjs/swagger"
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { cors: true });
+  const app = await NestFactory.create(AppModule);
   app.use(session({
     secret: "sdgfdss",
     resave: false,
@@ -19,7 +19,8 @@ async function bootstrap() {
   app.enableCors({
     credentials: true,
     allowedHeaders: "*",
-    origin: [process.env.CLIENT_HOST, "http://localhost:3000/", "http://localhost:3001/"],
+    // origin: [process.env.CLIENT_HOST, "http://localhost:3000/", "http://localhost:3001/"],
+    origin: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   })
   // app.use(
