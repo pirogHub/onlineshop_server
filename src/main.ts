@@ -14,16 +14,17 @@ async function bootstrap() {
     saveUninitialized: false
   }))
 
-  app.use(passport.initialize())
-  app.use(passport.session())
-  app.enableCors({
+  const configCors = {
     credentials: true,
     allowedHeaders: ['Origin', ' X-Requested-With', ' Content-Type', ' Accept', ' Authorization'],
     // origin: [process.env.CLIENT_HOST, "http://localhost:3000", "localhost:3000", "http://localhost:3001"],
     origin: process.env.CLIENT_HOST,
     // origin: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
-  })
+  }
+  app.use(passport.initialize())
+  app.use(passport.session())
+  app.enableCors({ ...configCors })
   // app.use(
   //   cors({
   //     credentials: true,
@@ -32,6 +33,9 @@ async function bootstrap() {
   //     allowedHeaders: ["Content-Type", "Authorization"],
   //   })
   // );
+
+  console.log("process.env.CLIENT_HOST", process.env.CLIENT_HOST);
+  console.log("configCors", configCors);
   const config = new DocumentBuilder()
     .setTitle('Online Shop')
     .setDescription('api documentation')
