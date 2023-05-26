@@ -21,7 +21,7 @@ async function bootstrap() {
     allowedHeaders: "*",
     // origin: [process.env.CLIENT_HOST, "http://localhost:3000/", "http://localhost:3001/"],
     origin: true,
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE, OPTIONS",
   })
   // app.use(
   //   cors({
