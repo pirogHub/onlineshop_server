@@ -20,6 +20,8 @@ export class PaymentController {
     @UseGuards(AuthenticatedGuard)
     @Post('/info')
     checkPayment(@Body() checkPaymentDto: CheckPaymentDto) {
+        console.log("payment info");
+
         return this.paymentService.checkPayment(checkPaymentDto);
     }
 }

@@ -39,18 +39,22 @@ export class PaymentService {
     }
 
     async checkPayment(checkPaymentDto: CheckPaymentDto) {
+        console.log("payment", checkPaymentDto.paymentId);
+
         try {
             const { data } = await axios({
                 method: 'GET',
                 url: `https://api.yookassa.ru/v3/payments/${checkPaymentDto.paymentId}`,
                 auth: {
-                    username: '204971',
-                    password: 'test_dgisbcPctB1RjjKeSBzdIuXJR0IRTFKm6Rdi9eNGZxE',
+                    username: '321227',
+                    password: 'test_nGjjml1zkQdAVhclMaDJPhTkLOV-PhCfHuv9iq1t-Go',
                 },
             });
 
             return data;
         } catch (error) {
+            console.log("Error payment", checkPaymentDto.paymentId);
+
             throw new ForbiddenException(error);
         }
     }

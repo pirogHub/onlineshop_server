@@ -28,15 +28,15 @@ export class ShoppingCartController {
     @ApiOkResponse({ type: TotalPriceResponse })
     @ApiBody({ type: TotalPriceRequest })
     @UseGuards(AuthenticatedGuard)
-    @Patch('/update-count/:partId')
-    updateCount(@Body() { count }: { count: number }, @Param("partId") partId: string) {
-        return this.shoppingCartService.updateCount(count, partId)
+    @Patch('/update-count/:id')
+    updateCount(@Body() { count }: { count: number }, @Param("id") id: string) {
+        return this.shoppingCartService.updateCount(count, id)
     }
 
     @UseGuards(AuthenticatedGuard)
-    @Patch('/update-total-price/:partId')
-    updateTotalPrice(@Body() { total_price }: { total_price: number }, @Param("partId") partId: string) {
-        return this.shoppingCartService.updateTotalPrice(total_price, partId)
+    @Patch('/update-total-price/:id')
+    updateTotalPrice(@Body() { total_price }: { total_price: number }, @Param("id") id: string) {
+        return this.shoppingCartService.updateTotalPrice(total_price, id)
     }
 
     @UseGuards(AuthenticatedGuard)

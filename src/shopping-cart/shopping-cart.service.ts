@@ -39,17 +39,19 @@ export class ShoppingCartService {
         return cart.save()
     }
 
-    async updateCount(count: number, partId: string | number): Promise<{ count: number }> {
-        await this.shoppingCartModel.update({ count }, { where: { partId } })
+    async updateCount(count: number, id: string | number): Promise<{ count: number }> {
+        await this.shoppingCartModel.update({ count }, { where: { id } })
+        console.log("count", count);
+        console.log("id", id);
 
-        const cart = await this.shoppingCartModel.findOne({ where: { partId } })
+        const cart = await this.shoppingCartModel.findOne({ where: { id } })
 
         return { count: cart.count }
     }
 
-    async updateTotalPrice(total_price: number, partId: number | string): Promise<{ total_price: number }> {
-        await this.shoppingCartModel.update({ total_price }, { where: { partId } })
-        const cart = await this.shoppingCartModel.findOne({ where: { partId } })
+    async updateTotalPrice(total_price: number, id: number | string): Promise<{ total_price: number }> {
+        await this.shoppingCartModel.update({ total_price }, { where: { id } })
+        const cart = await this.shoppingCartModel.findOne({ where: { id } })
         return { total_price: cart.total_price }
     }
 
