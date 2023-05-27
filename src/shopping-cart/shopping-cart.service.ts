@@ -1,5 +1,5 @@
 import { BoilerPartsService } from './../boiler-parts/boiler-parts.service';
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { ShoppingCart } from './shopping-cart.model';
 import { AuthService } from 'src/auth/auth.service';
@@ -15,9 +15,32 @@ export class ShoppingCartService {
     ) { }
 
 
-    async findAll(userId: number | string): Promise<ShoppingCart[]> {
+    async findAll(query: any): Promise<ShoppingCart[]> {
+        try {
 
-        return this.shoppingCartModel.findAll({ where: { userId } })
+            const data = await this.shoppingCartModel.findAll(query)
+            return data
+        } catch (error) {
+            throw new InternalServerErrorException()
+        }
+    }
+    async findOne(query: any): Promise<ShoppingCart> {
+        try {
+
+            const cart = await this.shoppingCartModel.findOne(query)
+            return cart
+        } catch (error) {
+            throw new InternalServerErrorException()
+        }
+    }
+    async update(arg1: any, arg2: any) {
+        try {
+
+            const flag = await this.shoppingCartModel.update(arg1, arg2)
+            return flag
+        } catch (error) {
+            throw new InternalServerErrorException()
+        }
     }
 
     async add(dto: AddToCartDto) {
@@ -40,28 +63,31 @@ export class ShoppingCartService {
     }
 
     async updateCount(count: number, id: string | number): Promise<{ count: number }> {
-        const flag = await this.shoppingCartModel.update({ count }, { where: { id } })
-        console.log("flag", flag);
-        console.log("count", count);
-        console.log("id", id);
+        const flag = await this.update({ count }, { where: { id } })
 
-        const cart = await this.shoppingCartModel.findOne({ where: { id } })
+
+        const cart = await this.findOne({ where: { id } })
 
         return { count: cart.count }
     }
 
     async updateTotalPrice(total_price: number, id: number | string): Promise<{ total_price: number }> {
-        await this.shoppingCartModel.update({ total_price }, { where: { id } })
-        const cart = await this.shoppingCartModel.findOne({ where: { id } })
+        await this.update({ total_price }, { where: { id } })
+        const cart = await this.findOne({ where: { id } })
         return { total_price: cart.total_price }
     }
 
     async remove(partId: number | string): Promise<void> {
-        const cart = await this.shoppingCartModel.findOne({ where: { partId } })
+        const cart = await this.findOne({ where: { partId } })
         await cart.destroy()
     }
 
     async removeAll(userId: number | string): Promise<void> {
-        await this.shoppingCartModel.destroy({ where: { userId } })
+        try {
+
+            await this.shoppingCartModel.destroy({ where: { userId } })
+        } catch (error) {
+            throw new InternalServerErrorException()
+        }
     }
 }

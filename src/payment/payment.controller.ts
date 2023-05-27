@@ -23,5 +23,6 @@ export class PaymentController {
         console.log("payment info");
 
         return this.paymentService.checkPayment(checkPaymentDto);
+        // return { data: { status: "succeeded" } }
     }
 }

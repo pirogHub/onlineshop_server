@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { JwtService } from "@nestjs/jwt"
 
 import { UnauthorizedException } from "@nestjs/common"
@@ -17,8 +17,13 @@ export class AuthService {
         private readonly jwtService: JwtService
     ) { }
 
-    findOne(filter: { where: { id?: string, username?: string, email?: string } }): Promise<User> {
-        return this.userModel.findOne({ ...filter })
+    async findOne(filter: { where: { id?: string, username?: string, email?: string } }): Promise<User> {
+        try {
+            const user = await this.userModel.findOne({ ...filter })
+            return user
+        } catch (error) {
+            throw new InternalServerErrorException()
+        }
     }
 
     async getNewTokens({ refreshToken }: RefreshTokenDto) {
@@ -44,6 +49,19 @@ export class AuthService {
         return { user: { username: user.username, email: user.email, id: user.id }, ...tokens }
     }
 
+    async createUser(createUserDto: AuthDto) {
+        try {
+            const user = new User()
+            const hashedPassword = await bcrypt.hash(createUserDto.password, 10)
+            user.username = createUserDto.username
+            user.password = hashedPassword
+            user.email = createUserDto.email
+            await user.save()
+            return user
+        } catch (error) {
+            throw new InternalServerErrorException()
+        }
+    }
     async register(createUserDto: AuthDto) {
 
         try {
@@ -55,16 +73,18 @@ export class AuthService {
             if (existingByEmail)
                 return { warningMessage: "Пользователь с таким email уже существует" }
 
-            const user = new User()
+            // const user = new User()
 
-            const hashedPassword = await bcrypt.hash(createUserDto.password, 10)
+            // const hashedPassword = await bcrypt.hash(createUserDto.password, 10)
 
-            user.username = createUserDto.username
-            user.password = hashedPassword
-            user.email = createUserDto.email
+            // user.username = createUserDto.username
+            // user.password = hashedPassword
+            // user.email = createUserDto.email
 
 
-            await user.save()
+            // await user.save()
+
+            const user = await this.createUser(createUserDto)
 
             const tokens = await this.issueTokenPair(user.id)
 
