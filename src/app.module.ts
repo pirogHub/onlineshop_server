@@ -1,6 +1,6 @@
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Module } from '@nestjs/common';
-import { UsersModule } from './users/users.module';
+// import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { SequelizeConfigService } from './users/config/sequelizeConfig.service';
 import { databaseConfig } from './users/config/configuration';
@@ -19,7 +19,7 @@ import { PaymentModule } from './payment/payment.module';
     ConfigModule.forRoot({
       load: [databaseConfig]
     }),
-    UsersModule,
+    // UsersModule,
     AuthModule,
     BoilerPartsModule,
     ShoppingCartModule,

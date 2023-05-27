@@ -2,7 +2,7 @@ import { BoilerPartsService } from './../boiler-parts/boiler-parts.service';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { ShoppingCart } from './shopping-cart.model';
-import { UsersService } from 'src/users/users.service';
+import { AuthService } from 'src/auth/auth.service';
 import { AddToCartDto } from './dto/add-to-cart.dto';
 
 @Injectable()
@@ -10,7 +10,7 @@ export class ShoppingCartService {
     constructor(
         @InjectModel(ShoppingCart)
         private shoppingCartModel: typeof ShoppingCart,
-        private readonly usersService: UsersService,
+        private readonly authService: AuthService,
         private readonly boilerPartsService: BoilerPartsService
     ) { }
 
@@ -22,7 +22,7 @@ export class ShoppingCartService {
 
     async add(dto: AddToCartDto) {
         const cart = new ShoppingCart()
-        const user = await this.usersService.findOne({ where: { username: dto.username } })
+        const user = await this.authService.findOne({ where: { username: dto.username } })
         const part = await this.boilerPartsService.findOne(dto.partId)
 
         cart.userId = +user.id
@@ -40,7 +40,8 @@ export class ShoppingCartService {
     }
 
     async updateCount(count: number, id: string | number): Promise<{ count: number }> {
-        await this.shoppingCartModel.update({ count }, { where: { id } })
+        const flag = await this.shoppingCartModel.update({ count }, { where: { id } })
+        console.log("flag", flag);
         console.log("count", count);
         console.log("id", id);
 
